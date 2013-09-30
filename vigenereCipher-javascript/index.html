@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CipherHakLite 1.6</title>
+	<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+	<div class="container">
+		<header>CipherHak<span id="hilite">Lite</span> 1.6.2</header>
+		<!-- cihper -->
+		<div class="msg-container">
+			<span id="msg-header">Message:</span>
+			<textarea id="msg"></textarea> 
+			<input type="button" id="cipherIt" name="cipher" value="Cipher"> 
+		</div>
+		<hr class="two">
+		<div class="msg-container">
+			<span class="msg-header">Key:</span>
+			<div id="key-output"></div>
+			<span class="msg-header">Cipher:</span>
+			<div id="msg-output"></div>
+		</div>
+		<hr class="one">
+		<!-- decihper -->
+		<div class="msg-container">
+			<span class="msg-header">Key:</span>
+			<div><input type="text" id="key-input"></div>
+			<span class="msg-header">Cipher:</span>
+			<div><input type="text" id="cipher-input"></div>
+			<input type="button" id="deCipherIt" name="decipher" value="DeCipher">
+		</div>
+		<hr class="two">
+		<div class="msg-container">
+			<span class="msg-header">Message:</span>
+			<div id="demsg-output"></div>
+
+		</div>
+	</div>
+	<script src="js/app.js"></script>
+</body>
+</html>

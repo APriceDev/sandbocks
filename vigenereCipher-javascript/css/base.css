@@ -1,0 +1,63 @@
+body{
+	background-color: rgba(0,0,0,0.5);
+	color: rgba(255,255,255, 0.6);
+	font-family: arial;
+	margin: 0.25%;
+}
+
+header{
+	font-size: 1.5em;
+}
+
+hr { 
+	display: block; 
+	height: 1px;
+    border: 0; 
+    margin: 1em 0; 
+    padding: 0; 
+}
+
+.one
+{
+	border-top: 1px solid rgba(0,200,255,0.75);
+}
+
+.two
+{
+	border-top: 1px solid rgba(255,255,255,0.25);
+}
+.container{	
+	background-color: rgba(0,0,0,0.5);
+	margin: auto;
+	padding: 1%;
+	width:80%;
+}
+
+#hilite{
+ color: rgba(0,200,255,0.75);;
+}
+
+.msg-container{
+	background-color: rgba(0,0,0,0.5);
+	width:98%;
+	height: 50%;
+	padding: 1%;
+}
+
+.msg-header{
+	display: block;
+}
+
+#msg{
+	background-color: rgba(255,255,255,0.5);
+	font-family: arial;
+	font-size: 1em;
+	height: 80%;
+	width: 99%;
+}
+
+input[type='text']
+{
+	background-color: rgba(255,255,255,0.5);
+	width: 99%;
+}
