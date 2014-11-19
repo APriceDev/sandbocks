@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>INFO1-CE9766001 – Advanced JavaScript - Alan Price - Memory Game</title>
+	<link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+	<div class="container">
+		<!-- scoreboard -->
+		<div class="game-style" id="game-info">
+			<div id="game-score">
+				<div id="score-card">
+					<div>
+						<span class="label">Matches: </span><span class="label" id="match"></span>
+					</div>
+					<div>
+						<span class="label">Attempts: </span><span class="label" id="attempts"></span>
+					</div>
+					<div>
+						<span class="label">Total: </span><span class="label" id="total"></span>
+					</div>
+					<!-- <span class="label">Comments:</span><span class="label" id="comments"></span> -->
+				</div>
+			</div>
+			<div id="game-controls">
+				<!-- <input type="button" id="btn-reset" value="Reset Game"> -->
+				<div id="btn-reset">Reset Game</div>
+			</div>	
+		</div>
+		<!-- game board -->
+		<div class="game-style" id="game-board">
+			<!-- first row -->
+			<div class="game-style tile" id="tile-0"></div>
+			<div class="game-style tile" id="tile-1"></div>
+			<div class="game-style tile" id="tile-2"></div>
+			<div class="game-style tile" id="tile-3"></div>
+			<!-- second row -->
+			<div class="game-style tile" id="tile-4"></div>
+			<div class="game-style tile" id="tile-5"></div>
+			<div class="game-style tile" id="tile-6"></div>
+			<div class="tile" id="tile-7"></div>
+			<!-- third row row -->
+			<div class="game-style tile" id="tile-8"></div>
+			<div class="game-style tile" id="tile-9"></div>
+			<div class="game-style tile" id="tile-10"></div>
+			<div class="game-style tile" id="tile-11"></div>
+			<!-- fourth row row -->
+			<div class="game-style tile" id="tile-12"></div>
+			<div class="game-style tile" id="tile-13"></div>
+			<div class="game-style tile" id="tile-14"></div>
+			<div class="game-style tile" id="tile-15"></div>	
+		</div>
+	</div>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/app.js"></script>
+</body>
+</html>
