@@ -20,6 +20,8 @@ function getSound(source, url, loop) {
     ctx.decodeAudioData(audioData, function(buffer) {
 
         source.buffer = buffer;
+        source.loopStart = 0;
+        source.loopEnd = 18;
         source.connect(ctx.destination);
         source.loop = loop;
       });
@@ -32,8 +34,8 @@ function loadSound() {
 
   source1 = ctx.createBufferSource();
   source2 = ctx.createBufferSource();
-  getSound(source1, "data/dayLoopA.wav", true);
-  getSound(source2, "data/dayLoopB.wav", true);
+  getSound(source1, "data/dayLoop.wav", true);
+  //getSound(source2, "data/dayLoopB.wav", true);
 
   source1.start(0);
   source2.start(0);
