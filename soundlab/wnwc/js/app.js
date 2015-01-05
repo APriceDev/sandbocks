@@ -1,7 +1,7 @@
 // white noise and white caps
 // version: "0.9",
 
-var noiseBox = (function($) {
+var wnwc = (function($) {
 "use strict";
 
 	var 	ctx,
@@ -132,5 +132,5 @@ var noiseBox = (function($) {
 }(jQuery));
 
 (function(){
-	noiseBox.init();
+	wnwc.init();
 }());
