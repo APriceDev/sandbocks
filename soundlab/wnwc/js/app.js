@@ -1,5 +1,5 @@
 // white noise and white caps
-// version: "0.9",
+// version 0.9.2
 
 var wnwc = (function($) {
 "use strict";
@@ -16,18 +16,19 @@ var wnwc = (function($) {
 		lpf2,
 		panOne,
 		panTwo,
-		ms,
+		master,
+		compressor,
 		destination;
 
 	function init(){
 
-		ms = document.getElementById("masterSwitch");
+		master = document.getElementById("masterSwitch");
 
 		ctx = new AudioContext();
 		setupEventListeners();
 	};
 
-	function whiteNoise(source){
+	function whiteNoise(source){	// make a white noise here...
 		var bufferSize = 5 * ctx.sampleRate,
 		buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate),
 		data = buffer.getChannelData(0);
@@ -46,7 +47,6 @@ var wnwc = (function($) {
 
 		oscOne = ctx.createBufferSource();
 		whiteNoise(oscOne);
-		//oscOneGain = oscOne.gain;
 
 		oscTwo = ctx.createBufferSource();
 		whiteNoise(oscTwo);
@@ -74,7 +74,6 @@ var wnwc = (function($) {
 		panTwo.panningModel = "equalpower";
 		panTwo.setPosition(-0.6,0,0.5);
 
-
 		lpf1 = ctx.createBiquadFilter();
 		lpf1.type = "lowpass";
 		//lpf1.frequency.value = 1000;
@@ -84,6 +83,14 @@ var wnwc = (function($) {
 
 		// hpf = ctx.createBiquadFilter();
 		// hpf.type = "highpass";
+
+		compressor = ctx.createDynamicsCompressor();
+		compressor.threshold.value = -50;
+		compressor.knee.value = 40;
+		compressor.ratio.value = 12;
+		compressor.reduction.value = -20;
+		compressor.attack.value = 0;
+		compressor.release.value = 0.25;
 
 		lfo1.connect(lfo1Gain);
 		lfo1Gain.connect(lpf1.frequency);
@@ -97,8 +104,12 @@ var wnwc = (function($) {
 		oscTwo.connect(panTwo);
 		panTwo.connect(lpf2);
 
-		lpf1.connect(destination);
-		lpf2.connect(destination);
+		lpf1.connect(compressor);
+		lpf2.connect(compressor);
+		compressor.connect(destination);
+
+		//lpf1.connect(destination);
+		//lpf2.connect(destination);
 
 		oscOne.start(0);
 		oscTwo.start(0);
@@ -122,7 +133,7 @@ var wnwc = (function($) {
 
 	function setupEventListeners(){
 
-		ms.addEventListener("click", toggleOsc);
+		master.addEventListener("click", toggleOsc);
 	};
 
 	return 	{
