@@ -18,7 +18,9 @@ var wnwc = (function($) {
 		panTwo,
 		master,
 		compressor,
-		destination;
+		destination,
+		path;
+
 
 	function init(){
 
@@ -29,9 +31,10 @@ var wnwc = (function($) {
 	};
 
 	function whiteNoise(source){	// make a white noise here...
-		var bufferSize = 5 * ctx.sampleRate,
-		buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate),
-		data = buffer.getChannelData(0);
+		var 	sampleRate = ctx.sampleRate,
+			bufferSize = 5 * sampleRate,
+			buffer = ctx.createBuffer(1, bufferSize, sampleRate),
+			data = buffer.getChannelData(0);
 
 		for (var i = 0; i < bufferSize; i++) {
 			data[i] = Math.random();
@@ -64,6 +67,8 @@ var wnwc = (function($) {
 
 		lfo2Gain = ctx.createGain();
 		lfo2Gain.gain.value = 300;
+
+		path = [oscOne, oscTwo, lfo1, lfo2];
 
 		panOne = ctx.createPanner(),
 		panOne.panningModel = "equalpower";
@@ -111,24 +116,23 @@ var wnwc = (function($) {
 		//lpf1.connect(destination);
 		//lpf2.connect(destination);
 
-		oscOne.start(0);
-		oscTwo.start(0);
-		lfo1.start(0);
-		lfo2.start(0);
+		for (var i = 0; i < path.length; i++) {
+			path[i].start(0);
+		};
 	};
 
 	function stopOsc(){
 
 		oscToggle = "stop";
-		oscOne.stop(0);
-		oscTwo.stop(0);
-		lfo1.stop(0);
-		lfo2.stop(0);
+
+		for (var i = 0; i < path.length; i++) {
+			path[i].stop(0);
+		};
 	};
 
 	function toggleOsc(){
 
-		oscToggle !== "start" ? startOsc() : stopOsc()
+		oscToggle !== "start" ? startOsc() : stopOsc();
 	};
 
 	function setupEventListeners(){
