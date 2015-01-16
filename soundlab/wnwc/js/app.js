@@ -4,27 +4,40 @@
 var wnwc = (function($) {
 "use strict";
 
-	var 	ctx,
-		oscToggle,
-		oscOne,
-		oscTwo,
-		lfo1,
-		lfo1Gain,
-		lfo2,
-		lfo2Gain,
-		lpf1,
-		lpf2,
-		panOne,
-		panTwo,
-		master,
-		compressor,
-		destination,
-		path;
-
+    var  ctx,
+            oscToggle,
+            oscOne,
+            oscTwo,
+            lfo1,
+            lfo1Gain,
+            lfo2,
+            lfo2Gain,
+            lpf1,
+            lpf2,
+            panOne,
+            panTwo,
+            master,
+            compressor,
+            destination,
+            path,
+            analyser,
+            // canvas
+            canvas,
+            canvasCtx,
+            fbc_array,
+            bars,
+            bar_x,
+            bar_width,
+            bar_height;
 
 	function init(){
 
 		master = document.getElementById("masterSwitch");
+		canvas = document.getElementById("fft");
+
+		canvasCtx = canvas.getContext("2d");
+		canvasCtx.fillStyle = "rgba(41,45,148,0)",
+        		canvasCtx.fillRect(0,0,600,100);
 
 		ctx = new AudioContext();
 		setupEventListeners();
@@ -47,6 +60,11 @@ var wnwc = (function($) {
 
 		oscToggle = "start";
 		destination = ctx.destination;
+
+                             analyser = ctx.createAnalyser();
+                             analyser.fftsize = 2048;
+
+
 
 		oscOne = ctx.createBufferSource();
 		whiteNoise(oscOne);
@@ -111,15 +129,36 @@ var wnwc = (function($) {
 
 		lpf1.connect(compressor);
 		lpf2.connect(compressor);
-		compressor.connect(destination);
+		compressor.connect(analyser);
 
 		//lpf1.connect(destination);
 		//lpf2.connect(destination);
 
+                             analyser.connect(destination);
+
+
 		for (var i = 0; i < path.length; i++) {
 			path[i].start(0);
 		};
+
+                            frameLooper();
 	};
+
+               function frameLooper(){
+                            window.requestAnimationFrame(frameLooper);
+                            fbc_array = new Uint8Array(analyser.frequencyBinCount);
+                            analyser.getByteFrequencyData(fbc_array);
+                            canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+                            canvasCtx.fillStyle = "rgba(255,255,255,0.25)";
+                            bars = 200;
+                            for (var i = 3; i < bars; i++) {
+
+                                bar_x = i * 3;
+                                bar_width = 2;
+                                bar_height = -(fbc_array[i] / 2);
+                                canvasCtx.fillRect(bar_x, canvas.height, bar_width, bar_height);
+                            }
+               };
 
 	function stopOsc(){
 
