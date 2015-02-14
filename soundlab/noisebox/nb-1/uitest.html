@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>NoiseBox NB-1 UI Test</title>
+    <!-- <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css"> -->
+    <link rel="stylesheet" href="css/jquery-ui.min.css"/>
+    <!-- <link rel="stylesheet" href="css/jquery-ui.structure.min.css"/> -->
+    <link rel="stylesheet" href="css/ui-base.css"/>
+</head>
+<body>
+    <div class="container">
+
+
+    <div class="nb-knob">
+        <p>Master<br/>Volume</p>
+        <input class="knob"  id ="volume"  data-readOnly=false data-displayPrevious=false data-skin="tron" data-thickness=".2" value="25">
+    </div>
+    <div class="nb-knob">
+        <p>Filter</p>
+        <input class="knob"  id ="filter" data-readOnly=false data-displayPrevious=false data-skin="tron" data-thickness=".2" value="0">
+    </div>
+
+    <div>
+        <label for="filterQ">Q</label>
+        <div class="filters" id="filterQ" title="Q"></div>
+    </div>
+
+<div id="radio">
+    <input type="radio" id="radio1" name="radio" checked="checked"><label for="radio1">Sine</label>
+    <input type="radio" id="radio2" name="radio"><label for="radio2">Square</label>
+    <input type="radio" id="radio3" name="radio"><label for="radio3">Triangle</label>
+    <input type="radio" id="radio4" name="radio"><label for="radio4">Saw</label>
+  </div>
+
+<!-- <audio width="300" height="32" src="http://developer.mozilla.org/@api/deki/files/2926/=AudioTest_(1).ogg" autoplay="autoplay" controls="controls">
+ Your browser does not support the HTML5 Audio.
+ </audio> -->
+
+
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/jquery.knob.js"></script>
+    <!-- <script src="js/jquery-1.11.1.min.js"></script> -->
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/ui-app.js"></script>
+
+</body>
+</html>

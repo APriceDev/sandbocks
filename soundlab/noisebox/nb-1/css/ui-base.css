@@ -1,0 +1,60 @@
+body{
+    background-color: rgba(252,202,3,1);
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Exo', sans-serif;
+    color:  rgba(41,45,48,1);
+}
+
+p{
+    font-weight: bold;
+}
+.container{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0px;
+    padding: 10px;
+}
+
+.nb-knob{
+    text-align: center;
+    /*
+    border: 1px solid rgba(41,45,48,1);
+    border-radius: 15px;
+    width: 110px;
+    */
+    display: inline-block;
+}
+
+
+#filterQ {
+    height: 10px;
+    width: 100px;
+}
+
+.ui-slider {
+    background-color: rgba(0,0,0,0);
+    border-top: 1px solid rgba(41,45,48,0.25);
+    border-radius: 15%;
+    margin: 10px 0 0 10px;
+}
+
+.ui-slider .ui-slider-handle {
+    background-color: rgba(41,45,48,1);
+    border: 1px solid rgba(255,255,255,0);
+    border-radius: 50%;
+    height: 6px;
+    width: 10px;
+}
+
+/*.ui-slider:hover {
+    border-top: 1px solid rgba(255,255,100,0.4);
+}
+.ui-slider-handle:hover {
+    background-color: rgba(151,166,93,1);
+}*/
+
+input[type = "radio"] {
+    color: white;
+}
