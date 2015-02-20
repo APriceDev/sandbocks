@@ -8,15 +8,26 @@ var nb1 = (function($){
     destination,
     osc1,
     osc1Type = "sine",
+    osc1Frq = 440,
     osc1Gain,
     osc1GainLevel = 0.25,
     vol,
     volumeState,
-    radio,
+    frq,
+    frqState,
+    radioOcs,
     osc1Btn,
     osc1Toggle,
+
+    ocs1LFO,
+    osc1LFOType = "sine",
+    osc1LFOFrq = 0,
+    ocs1LFOGain,
+    ocs1LFOGainLevel = 0,
+
     analyser,
     canvasCtxScope,
+    isPaused = false,
     scope,
     looperScope,
     scopeBufferLength,
@@ -32,7 +43,8 @@ var nb1 = (function($){
 
     $(function($) {
 
-        vol = $("#volume")
+        vol = $("#volume"),
+        frq = $("#frequency")
 
         vol.slider({
                     //orientation: "vertical",
@@ -50,13 +62,36 @@ var nb1 = (function($){
                     updateVolume(ui.value, this);
                     }
                 });
+
+        frq.slider({
+                    //orientation: "vertical",
+                    min: 10,
+                    max: 3000,
+                    step: 1,
+                    value: osc1Frq,
+                    slide: function(e, ui){
+
+                    updateFrequency(ui.value, this);
+                    },
+
+                    change: function(e, ui){
+
+                    updateFrequency(ui.value, this);
+                    }
+                });
     });
 
+    var freeze = function(){
+
+        isPaused = !isPaused;
+        console.log(isPaused);
+    }
 
     var scopeLooper = function(){
         looperScope = window.requestAnimationFrame(scopeLooper);
 
         scopeBufferLength = analyser.fftSize,
+
         scopeBufferArray = new Uint8Array(scopeBufferLength);
         canvasCtxScope.clearRect(0, 0, scope.width, scope.height);
 
@@ -71,24 +106,24 @@ var nb1 = (function($){
         var sliceWidth = scope.width * 1.0 / scopeBufferLength;
         var x = 0;
 
-        for(var i = 0; i < scopeBufferLength; i++) {
+            for(var i = 0; i < scopeBufferLength; i++) {
 
-            var v = scopeBufferArray[i] / 128.0;
-            var y = v * scope.height/2;
+                var v = scopeBufferArray[i] / 128.0;
+                var y = v * scope.height/2;
 
-            if(i === 0) {
-                canvasCtxScope.moveTo(x, y);
+                if(i === 0) {
+                    canvasCtxScope.moveTo(x, y);
+                }
+                else {
+                    canvasCtxScope.lineTo(x, y);
+                }
+
+                x += sliceWidth;
             }
-            else {
-                canvasCtxScope.lineTo(x, y);
-            }
-
-            x += sliceWidth;
-        }
 
         canvasCtxScope.lineTo(scope.width, scope.height/2);
         canvasCtxScope.stroke();
-        // console.log("scope running");
+        //console.log("scope running");
     };
 
     function fftLooper(){
@@ -121,6 +156,7 @@ var nb1 = (function($){
 
         osc1 = audioCtx.createOscillator();
         osc1.type = osc1Type;
+        osc1.frequency.value = osc1Frq;
         osc1Gain = audioCtx.createGain();
 
         waveState();
@@ -170,6 +206,19 @@ var nb1 = (function($){
             volumeState.innerHTML = " " + (parseInt(value*100)) + "%";
         }
     }
+
+    var updateFrequency = function(value, el){
+
+        value === undefined ? osc1Frq : osc1Frq = value;
+
+        if (osc1){
+            osc1.frequency.value = osc1Frq;
+        }
+
+        if (el !== undefined){
+            frequencyState.innerHTML = " " + value + " hz";
+        }
+    }
     var waveState = function(e){
 
         e === undefined ? osc1Type : osc1Type = e.target.id;
@@ -178,6 +227,7 @@ var nb1 = (function($){
         }
     };
 
+
     var toggleOsc1 = function(){
 
         osc1Toggle !== "start" ? (startOsc1(), osc1Btn.className = "toggle btnOn") : (stopOsc1(), osc1Btn.className =  "toggle");
@@ -185,17 +235,21 @@ var nb1 = (function($){
 
     var setupEventListeners = function(){
 
+        scope.addEventListener("click", freeze);
         osc1Btn.addEventListener("click", toggleOsc1);
-        radio.addEventListener("click", waveState);
+        radioOcs.addEventListener("click", waveState);
     };
 
     var init = function(){
 
         osc1Btn = document.getElementById("osc1Btn");
-        radio = document.getElementById("radio");
+        radioOcs = document.getElementById("radioOcs");
 
         volumeState = document.getElementById("volumeState");
         volumeState.innerHTML = " 25%";
+
+        frqState = document.getElementById("frequencyState");
+        frqState.innerHTML = " 440 hz";
 
         audioCtx = new AudioContext();
         scope = document.getElementById("scope"),
@@ -210,7 +264,6 @@ var nb1 = (function($){
 
         fft = document.getElementById("fft"),
         canvasCtxFft = fft.getContext("2d");
-
 
         setupEventListeners();
     };
