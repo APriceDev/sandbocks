@@ -24,6 +24,9 @@ var nb1 = (function($){
     osc1LFOFrq = 0,
     ocs1LFOGain,
     ocs1LFOGainLevel = 0,
+    volLFO,
+    frqLFO,
+    radioOcsLFO,
 
     analyser,
     canvasCtxScope,
@@ -43,8 +46,10 @@ var nb1 = (function($){
 
     $(function($) {
 
-        vol = $("#volume"),
-        frq = $("#frequency")
+        vol = $("#volume");
+        frq = $("#frequency");
+        volLFO = $("#volumeLfo");
+        frqLFO = $("#frequencyLfo");
 
         vol.slider({
                     //orientation: "vertical",
@@ -79,6 +84,41 @@ var nb1 = (function($){
                     updateFrequency(ui.value, this);
                     }
                 });
+
+        volLFO.slider({
+                    //orientation: "vertical",
+                    min: 0,
+                    max: 1.01,
+                    step: 0.01,
+                    value: ocs1LFOGainLevel,
+                    slide: function(e, ui){
+
+                    updateLFOVolume(ui.value, this);
+                    },
+
+                    change: function(e, ui){
+
+                    updateLFOVolume(ui.value, this);
+                    }
+                });
+
+        frqLFO.slider({
+                    //orientation: "vertical",
+                    min: 0,
+                    max: 3000,
+                    step: 1,
+                    value: osc1LFOFrq,
+                    slide: function(e, ui){
+
+                    updateLFOFrequency(ui.value, this);
+                    },
+
+                    change: function(e, ui){
+
+                    updateLFOFrequency(ui.value, this);
+                    }
+                });
+
     });
 
     var freeze = function(){
@@ -159,14 +199,28 @@ var nb1 = (function($){
         osc1.frequency.value = osc1Frq;
         osc1Gain = audioCtx.createGain();
 
+        ocs1LFO = audioCtx.createOscillator();
+        ocs1LFO.type = osc1LFOType;
+        ocs1LFO.frequency.value = osc1LFOFrq;
+        ocs1LFOGain = audioCtx.createGain();
+
         waveState();
+        waveStateLFO();
+
+        updateLFOVolume();
+        updateLFOFrequency();
         updateVolume();
+
+        ocs1LFO.connect(ocs1LFOGain);
+        ocs1LFOGain.connect(osc1Gain.gain);
+        // ocs1LFOGain.connect(destination);
 
         osc1.connect(osc1Gain);
         osc1Gain.connect(analyser);
         analyser.connect(destination);
 
         osc1.start(0);
+        ocs1LFO.start(0);
         scopeLooper();
         fftLooper();
     };
@@ -175,6 +229,7 @@ var nb1 = (function($){
 
         osc1Toggle = "stopOsc1";
         osc1.stop(0);
+        ocs1LFO.stop(0);
 
         function scopeLooperF(){
         window.cancelAnimationFrame(looperScope);
@@ -205,7 +260,7 @@ var nb1 = (function($){
         if (el !== undefined){
             volumeState.innerHTML = " " + (parseInt(value*100)) + "%";
         }
-    }
+    };
 
     var updateFrequency = function(value, el){
 
@@ -218,7 +273,34 @@ var nb1 = (function($){
         if (el !== undefined){
             frequencyState.innerHTML = " " + value + " hz";
         }
-    }
+    };
+
+    var updateLFOVolume = function(value, el){
+
+        value === undefined ? ocs1LFOGainLevel : ocs1LFOGainLevel = value;
+
+        if (ocs1LFOGain){
+            ocs1LFOGain.gain.value = ocs1LFOGainLevel;
+        }
+
+        if (el !== undefined){
+            volumeLfoState.innerHTML = " " + (parseInt(value*100)) + "%";
+        }
+    };
+
+    var updateLFOFrequency = function(value, el){
+
+        value === undefined ? osc1LFOFrq : osc1LFOFrq = value;
+
+        if (ocs1LFO){
+            ocs1LFO.frequency.value = osc1LFOFrq;
+        }
+
+        if (el !== undefined){
+            frequencyLfoState.innerHTML = " " + value + " hz";
+        }
+    };
+
     var waveState = function(e){
 
         e === undefined ? osc1Type : osc1Type = e.target.id;
@@ -227,6 +309,13 @@ var nb1 = (function($){
         }
     };
 
+    var waveStateLFO = function(e){
+
+        e === undefined ? osc1LFOType : osc1LFOType = e.target.id.substring(0, e.target.id.length -3);
+        if(ocs1LFO){
+            ocs1LFO.type = osc1LFOType;
+        }
+    };
 
     var toggleOsc1 = function(){
 
@@ -238,12 +327,14 @@ var nb1 = (function($){
         scope.addEventListener("click", freeze);
         osc1Btn.addEventListener("click", toggleOsc1);
         radioOcs.addEventListener("click", waveState);
+        radioOcsLFO.addEventListener("click", waveStateLFO);
     };
 
     var init = function(){
 
         osc1Btn = document.getElementById("osc1Btn");
         radioOcs = document.getElementById("radioOcs");
+        radioOcsLFO = document.getElementById("radioLfo");
 
         volumeState = document.getElementById("volumeState");
         volumeState.innerHTML = " 25%";
