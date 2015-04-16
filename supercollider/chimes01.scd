@@ -45,9 +45,33 @@ a.free;
 TempoClock.default.sched(1, { rrand(1, 3).postln; });
 TempoClock.default.sched(1, {{SinOsc.ar(rand(100,200));}.play;  rrand(1, 3).postln;});
 
+
+
 { Ringz.ar(Dust.ar(0.4, rand(0.2,0.3)), rand(1000,2000), 4) }.play;
+
+var env = Env([0, 1, 1, 0], [10, 480, 30],[5, 0, -5]);
+
+
+{
+	var env = Env([0, 1, 1, 0], [1, 298, 1],[5, 0, -5]);
+	Ringz.ar(Dust.ar(0.4, rand(0.2,0.3)), rand(1000,2000), 4) * EnvGen.kr(env, doneAction: 2);
+}.play;
+
 c = 0;
-TempoClock.default.sched(1, { c = c + 1; {Ringz.ar(Dust.ar(0.4, rand(0.2,0.3)), rand(1000,2000)); }.play;  c.postln; 20;});
+TempoClock.default.sched(1, {
+	c = c + 1;
+	{
+		var env = Env([0, 1, 1, 0], [1, 298, 1],[5, 0, -5]);
+		//Ringz.ar(Dust.ar(0.4, rand(0.1,0.2)), rand(1000,2000), 4) * EnvGen.kr(env, doneAction: 2);
+		Ringz.ar(Amplitude.ar(Dust.ar(0.4, rand(0.6,0.9))), rand(1000,2000), 4) * EnvGen.kr(env, doneAction: 2);
+	}.play;
+	c.postln;
+	if (c < 30, {
+		20;
+	}, {
+		nil;
+	});
+});
 
 (
 SynthDef(\chimes2, {
