@@ -1,7 +1,7 @@
 // ------------------------------------------  test tone  ---------------------------------------------------  >
-{SinOsc.ar()!2}.play
+{SinOsc.ar()!2}.play;
 
-{Balance2.ar(SinOsc.ar(330), SinOsc.ar(440), MouseX.kr(-1,1), 0.5)}.play
+{Balance2.ar(SinOsc.ar(330), SinOsc.ar(440), MouseX.kr(-1,1), 0.5)}.play;
 
 // ------------------------------------------  OSC trace  ---------------------------------------------------  >
 OSCdef.trace(false);
@@ -25,7 +25,7 @@ SynthDef(\Live, {
 b = Synth(\Live);
 b.free;
 
-//{FreeVerb.ar(SoundIn.ar(0).distort)}.play
+{FreeVerb.ar(SoundIn.ar(0).distort)}.play
 
 // ------------------------------------------  record session  ---------------------------------------------------  >
 (
@@ -33,8 +33,7 @@ b.free;
   s.recHeaderFormat = 'wav'
 )
 
-s.makeWindow;
+// s.makeWindow;
 s.record;
 s.stopRecording;
 
-)
