@@ -24,6 +24,7 @@
         oscTwoCtrl,
         oscTwoToggle = "stop";
 
+ // jQuery UI   *******************************************************
         $(function($) {
 
             masterVol = $("#masterVol");
@@ -37,13 +38,10 @@
                 step: 0.01,
                 value: masterVolLevel,
                 slide: function(e, ui){
-
-                    updateMasterGain(ui.value, this);
+                    updateGain(ui.value, this, masterVolLevel, masterGain, masterVolumeState);
                 },
-
                 change: function(e, ui){
-
-                    updateMasterGain(ui.value, this);
+                    updateGain(ui.value, this, masterVolLevel, masterGain, masterVolumeState);
                 }
             });
 
@@ -54,13 +52,10 @@
                 step: 0.01,
                 value: oscOneVolLevel,
                 slide: function(e, ui){
-
-                    updateOscOneGain(ui.value, this);
+                    updateGain(ui.value, this, oscOneVolLevel, oscOneGain, oscOneVolumeState);
                 },
-
                 change: function(e, ui){
-
-                    updateOscOneGain(ui.value, this);
+                    updateGain(ui.value, this, oscOneVolLevel, oscOneGain, oscOneVolumeState);
                 }
             });
 
@@ -71,29 +66,23 @@
                 step: 0.01,
                 value: oscTwoVolLevel,
                 slide: function(e, ui){
-
-                    updateOscTwoGain(ui.value, this);
+                    updateGain(ui.value, this, oscTwoVolLevel, oscTwoGain, oscTwoVolumeState);
                 },
-
                 change: function(e, ui){
-
-                    updateOscTwoGain(ui.value, this);
+                    updateGain(ui.value, this, oscTwoVolLevel, oscTwoGain, oscTwoVolumeState);
                 }
             });
 
         });
 
+// oscillator one  *******************************************************
 
-        /******
-            oscillator one
-            ******/
             var playOscOne = function(){
 
                 oscOne = audioCtx.createOscillator();
                 oscOneGain = audioCtx.createGain();
 
-                updateMasterGain();
-                updateOscOneGain();
+                updateGain();
 
                 masterGain.connect(destination);
                 oscOneGain.connect(masterGain);
@@ -109,34 +98,15 @@
              oscOneToggle = "stop";
          };
 
-         var updateOscOneGain = function(value, el){
-            value === undefined ? oscOneVolLevel : oscOneVolLevel = value;
-            if (oscOneGain){
-             oscOneGain.gain.value = oscOneVolLevel;
-         }
+ // oscillator two  *******************************************************
 
-         if (el !== undefined){
-            oscOneVolumeState.innerHTML = " " + (parseInt(value*100)) + "%";
-        }
-
-    };
-
-    var toggleOscOne = function(){
-
-        oscOneToggle !== "start" ? (playOscOne(), oscOneCtrl.className = "toggle toggleOn") : (stopOscOne(), oscOneCtrl.className =  "toggle");
-    };
-
-        /*****
-            oscillator two
-            ******/
             var playOscTwo = function(){
 
                 oscTwo = audioCtx.createOscillator();
                 oscTwo.frequency.value = 330;
                 oscTwoGain = audioCtx.createGain();
 
-                updateMasterGain();
-                updateOscTwoGain();
+                updateGain();
 
                 masterGain.connect(destination);
                 oscTwoGain.connect(masterGain);
@@ -151,68 +121,61 @@
              oscTwoToggle = "stop";
          };
 
-         var updateOscTwoGain = function(value, el){
-            value === undefined ? oscTwoVolLevel : oscTwoVolLevel = value;
-            if (oscTwoGain){
-             oscTwoGain.gain.value = oscTwoVolLevel;
-         }
+        var updateGain = function(value, el, level, gainObject, htmlObject){
 
-         if (el !== undefined){
-            oscTwoVolumeState.innerHTML = " " + (parseInt(value*100)) + "%";
-        }
-    };
+            value === undefined ? level : level = value;
 
-    var toggleOscTwo = function(){
+            if(gainObject){
+                gainObject.gain.value = level;
+            }
 
-        oscTwoToggle !== "start" ? (playOscTwo(), oscTwoCtrl.className = "toggle toggleOn") : (stopOscTwo(), oscTwoCtrl.className =  "toggle");
-    };
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = " " + (parseInt(value * 100)) + "%";
+            }
+        };
 
+         var toggleOsc = function(toggle, startFunc, cntrl, stopFunc){
+            toggle !== "start" ? (startFunc(), cntrl.className = "toggle toggleOn") : (stopFunc(), cntrl.className =  "toggle");
+        };
 
-    var updateMasterGain = function(value, el){
+        var setupEventListeners = function(){
 
-        value === undefined ? masterVolLevel: masterVolLevel = value;
-        if (masterGain){
-         masterGain.gain.value = masterVolLevel;
-     }
+            oscOneCtrl.addEventListener("click", function(){
+                toggleOsc(oscOneToggle, playOscOne, oscOneCtrl, stopOscOne);
+            }, false);
 
-     if (el !== undefined){
-        masterVolumeState.innerHTML = " " + (parseInt(value*100)) + "%";
-    }
+            oscTwoCtrl.addEventListener("click", function(){
+                toggleOsc(oscTwoToggle, playOscTwo, oscTwoCtrl, stopOscTwo);
+            }, false);
+        };
 
+        var init = function(){
 
-};
+            masterVolumeState = document.getElementById("masterVolumeState");
+            masterVolumeState.innerHTML = " 25%";
 
-var setupEventListeners = function(){
-    oscOneCtrl.addEventListener("click", toggleOscOne);
-    oscTwoCtrl.addEventListener("click", toggleOscTwo);
-};
+            oscOneCtrl = document.getElementById("oscOneCtrl");
+            oscOneVolumeState = document.getElementById("oscOneVolumeState");
+            oscOneVolumeState.innerHTML = " 25%";
 
-var init = function(){
+            oscTwoCtrl = document.getElementById("oscTwoCtrl");
+            oscTwoVolumeState = document.getElementById("oscTwoVolumeState");
+            oscTwoVolumeState.innerHTML = " 25%";
 
-    masterVolumeState = document.getElementById("masterVolumeState");
-    masterVolumeState.innerHTML = " 25%";
+            audioCtx = new AudioContext();
+            destination  = audioCtx.destination;
+            masterGain = audioCtx.createGain();
 
-    oscOneCtrl = document.getElementById("oscOneCtrl");
-    oscOneVolumeState = document.getElementById("oscOneVolumeState");
-    oscOneVolumeState.innerHTML = " 25%";
+            setupEventListeners();
 
-    oscTwoCtrl = document.getElementById("oscTwoCtrl");
-    oscTwoVolumeState = document.getElementById("oscTwoVolumeState");
-    oscTwoVolumeState.innerHTML = " 25%";
+            console.log("NoiseBox NB-2 ready ...");
+        };
 
-    audioCtx = new AudioContext();
-    destination  = audioCtx.destination;
-    masterGain = audioCtx.createGain();
-    setupEventListeners();
+        return {
+            init : init
+        };
 
-    console.log("NoiseBox NB-2 ready ...");
-};
-
-return {
-    init : init
-};
-
-}(jQuery));
+    }(jQuery));
 
     (function(){
 
