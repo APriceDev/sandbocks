@@ -30,6 +30,7 @@
         oscTwoFrq,
         oscTwoFrqLevel = 330,
         oscTwoFrqState,
+        oscTwoWaveState,
         oscTwoCtrl,
         oscTwoToggle = "stop";
 
@@ -189,6 +190,7 @@
                 oscTwoGain = audioCtx.createGain();
 
                 // assign values
+                oscTwo.type = oscTwoWaveType;
                 oscTwo.frequency.value = oscTwoFrqLevel;
 
                 // update values
@@ -236,6 +238,14 @@
             }
         };
 
+        var oscTwoWaveUpdate = function(e){
+
+            console.log(e.target.title);
+            e === undefined ? oscTwoWaveType : oscTwoWaveType = e.target.title;
+            if(oscTwo){
+                oscTwo.type = oscTwoWaveType;
+            };
+        };
 
  // utilities  *******************************************************
 
@@ -267,6 +277,8 @@
             }, false);
 
             oscOneWaveState.addEventListener("click", oscOneWaveUpdate);
+
+            oscTwoWaveState.addEventListener("click", oscTwoWaveUpdate);
         };
 
         var init = function(){
@@ -286,6 +298,7 @@
             oscTwoVolumeState.innerHTML = " 25%";
             oscTwoFrqState = document.getElementById("oscTwoFrqState");
             oscTwoFrqState.innerHTML = " 330 hz";
+            oscTwoWaveState = document.getElementById("oscTwoWaveState");
 
             audioCtx = new AudioContext();
             destination  = audioCtx.destination;
