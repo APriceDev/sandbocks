@@ -12,15 +12,25 @@
     </header>
 
     <div class="rack">
-        <div class="toggle" id ="oscOneCtrl">1</div>
+        <div class="toggle" id ="oscOneCtrl" title="Osc One Toggle">1</div>
         <label for="Osc One Gain">Gain</label><span id="oscOneVolumeState"></span>
         <div class="slider" id="oscOneVol" title="Osc One Gain"></div>
+        <label for="Osc One Frequency">Frq</label><span id="oscOneFrqState"></span>
+        <div class="slider" id="oscOneFrq" title="Osc One Frequency"></div>
+        <div id="oscOneWaveState">
+            <input type="radio" id="sine" name="oscOneWave" title="sine" checked="checked"><label for="sine"><span></span>Sine</label>
+            <input type="radio" id="square" name="oscOneWave" title="square"><label for="square"><span></span>Square</label>
+            <input type="radio" id="triangle" name="oscOneWave" title="triangle"><label for="triangle"><span></span>Triangle</label>
+            <input type="radio" id="sawtooth" name="oscOneWave" title="sawtooth"><label for="sawtooth"><span></span>Saw</label>
+        </div>
     </div>
 
     <div class="rack">
-        <div class="toggle" id ="oscTwoCtrl">2</div>
+        <div class="toggle" id ="oscTwoCtrl" title="Osc Two Toggle">2</div>
         <label for="Osc Two Gain">Gain</label><span id="oscTwoVolumeState"></span>
         <div class="slider" id="oscTwoVol" title="Osc Two Gain"></div>
+        <label for="Osc Two Frequency">Frq</label><span id="oscTwoFrqState"></span>
+        <div class="slider" id="oscTwoFrq" title="Osc Two Frequency"></div>
     </div>
 
     <div class="rack">

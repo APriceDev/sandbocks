@@ -9,18 +9,27 @@
         masterVolumeState,
 
         oscOne,
+        oscOneWaveType = "sine",
         oscOneGain,
         oscOneVol,
         oscOneVolLevel = 0.25,
         oscOneVolumeState,
+        oscOneFrq,
+        oscOneFrqLevel = 440,
+        oscOneFrqState,
+        oscOneWaveState,
         oscOneCtrl,
         oscOneToggle = "stop",
 
         oscTwo,
+        oscTwoWaveType = "sine",
         oscTwoGain,
         oscTwoVol,
         oscTwoVolLevel = 0.25,
         oscTwoVolumeState,
+        oscTwoFrq,
+        oscTwoFrqLevel = 330,
+        oscTwoFrqState,
         oscTwoCtrl,
         oscTwoToggle = "stop";
 
@@ -28,8 +37,12 @@
         $(function($) {
 
             masterVol = $("#masterVol");
+
             oscOneVol = $("#oscOneVol");
+            oscOneFrq = $("#oscOneFrq");
+
             oscTwoVol = $("#oscTwoVol");
+            oscTwoFrq = $("#oscTwoFrq");
 
             masterVol.slider({
                 //orientation: "vertical",
@@ -38,10 +51,10 @@
                 step: 0.01,
                 value: masterVolLevel,
                 slide: function(e, ui){
-                    updateGain(ui.value, this, masterVolLevel, masterGain, masterVolumeState);
+                    updateMasterGain(ui.value, this, masterVolumeState);
                 },
                 change: function(e, ui){
-                    updateGain(ui.value, this, masterVolLevel, masterGain, masterVolumeState);
+                    updateMasterGain(ui.value, this, masterVolumeState);
                 }
             });
 
@@ -52,10 +65,24 @@
                 step: 0.01,
                 value: oscOneVolLevel,
                 slide: function(e, ui){
-                    updateGain(ui.value, this, oscOneVolLevel, oscOneGain, oscOneVolumeState);
+                    updateOscOneGain(ui.value, this, oscOneVolumeState);
                 },
                 change: function(e, ui){
-                    updateGain(ui.value, this, oscOneVolLevel, oscOneGain, oscOneVolumeState);
+                    updateOscOneGain(ui.value, this, oscOneVolumeState);
+                }
+            });
+
+            oscOneFrq.slider({
+                //orientation: "vertical",
+                min: 10,
+                max: 3000,
+                step: 1,
+                value: oscOneFrqLevel,
+                slide: function(e, ui){
+                    updateOscOneFrq(ui.value, this, oscOneFrqState);
+                },
+                change: function(e, ui){
+                    updateOscOneFrq(ui.value, this, oscOneFrqState);
                 }
             });
 
@@ -66,30 +93,51 @@
                 step: 0.01,
                 value: oscTwoVolLevel,
                 slide: function(e, ui){
-                    updateGain(ui.value, this, oscTwoVolLevel, oscTwoGain, oscTwoVolumeState);
+                    updateOscTwoGain(ui.value, this, oscTwoVolumeState);
                 },
                 change: function(e, ui){
-                    updateGain(ui.value, this, oscTwoVolLevel, oscTwoGain, oscTwoVolumeState);
+                    updateOscTwoGain(ui.value, this, oscTwoVolumeState);
                 }
             });
 
+            oscTwoFrq.slider({
+                //orientation: "vertical",
+                min: 10,
+                max: 3000,
+                step: 1,
+                value: oscTwoFrqLevel,
+                slide: function(e, ui){
+                    updateOscTwoFrq(ui.value, this, oscTwoFrqState);
+                },
+                change: function(e, ui){
+                    updateOscTwoFrq(ui.value, this, oscTwoFrqState);
+                }
+            });
         });
 
 // oscillator one  *******************************************************
 
             var playOscOne = function(){
 
+                // create params
                 oscOne = audioCtx.createOscillator();
                 oscOneGain = audioCtx.createGain();
 
-                updateGain();
+                // assign values
+                oscOne.type = oscOneWaveType;
+                oscOne.frequency.value = oscOneFrqLevel;
 
+                // update values
+                updateOscOneGain();
+                updateOscOneFrq();
+
+                // buss
                 masterGain.connect(destination);
                 oscOneGain.connect(masterGain);
                 oscOne.connect(oscOneGain);
 
+                // let 'er rip!
                 oscOne.start(0);
-
                 oscOneToggle = "start";
             };
 
@@ -98,21 +146,62 @@
              oscOneToggle = "stop";
          };
 
+        var updateOscOneGain = function(value, el, htmlObject){
+
+            value === undefined ? oscOneVolLevel : oscOneVolLevel = value;
+
+            if(oscOneGain){
+                    oscOneGain.gain.value = oscOneVolLevel;
+            }
+
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = " " + (parseInt(value * 100)) + "%";
+            }
+        };
+
+         var updateOscOneFrq = function(value, el, htmlObject){
+
+            value === undefined ? oscOneFrqLevel : oscOneFrqLevel = value;
+
+            if(oscOne){
+                    oscOne.frequency.value = oscOneFrqLevel;
+            }
+
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = " " + value + " hz";
+            }
+        };
+
+        var oscOneWaveUpdate = function(e){
+
+            console.log(e.target.title);
+            e === undefined ? oscOneWaveType : oscOneWaveType = e.target.title;
+            if(oscOne){
+                oscOne.type = oscOneWaveType;
+            };
+        };
  // oscillator two  *******************************************************
 
             var playOscTwo = function(){
 
+                // create params
                 oscTwo = audioCtx.createOscillator();
-                oscTwo.frequency.value = 330;
                 oscTwoGain = audioCtx.createGain();
 
-                updateGain();
+                // assign values
+                oscTwo.frequency.value = oscTwoFrqLevel;
 
+                // update values
+                updateOscTwoGain();
+                updateOscTwoFrq();
+
+                // buss
                 masterGain.connect(destination);
                 oscTwoGain.connect(masterGain);
                 oscTwo.connect(oscTwoGain);
-                oscTwo.start(0);
 
+                //let 'er rip!
+                oscTwo.start(0);
                 oscTwoToggle = "start";
             };
 
@@ -121,12 +210,41 @@
              oscTwoToggle = "stop";
          };
 
-        var updateGain = function(value, el, level, gainObject, htmlObject){
+        var updateOscTwoGain = function(value, el, htmlObject){
 
-            value === undefined ? level : level = value;
+            value === undefined ? oscTwoVolLevel : oscTwoVolLevel = value;
 
-            if(gainObject){
-                gainObject.gain.value = level;
+            if(oscTwoGain){
+                    oscTwoGain.gain.value = oscTwoVolLevel;
+            }
+
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = " " + (parseInt(value * 100)) + "%";
+            }
+        };
+
+         var updateOscTwoFrq = function(value, el, htmlObject){
+
+            value === undefined ? oscTwoFrqLevel : oscTwoFrqLevel = value;
+
+            if(oscTwo){
+                    oscTwo.frequency.value = oscTwoFrqLevel;
+            }
+
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = " " + value + " hz";
+            }
+        };
+
+
+ // utilities  *******************************************************
+
+        var updateMasterGain = function(value, el, htmlObject){
+
+            value === undefined ? masterVolLevel : masterVolLevel = value;
+
+            if(masterGain){
+                    masterGain.gain.value = masterVolLevel;
             }
 
             if(el !== undefined){
@@ -147,6 +265,8 @@
             oscTwoCtrl.addEventListener("click", function(){
                 toggleOsc(oscTwoToggle, playOscTwo, oscTwoCtrl, stopOscTwo);
             }, false);
+
+            oscOneWaveState.addEventListener("click", oscOneWaveUpdate);
         };
 
         var init = function(){
@@ -157,10 +277,15 @@
             oscOneCtrl = document.getElementById("oscOneCtrl");
             oscOneVolumeState = document.getElementById("oscOneVolumeState");
             oscOneVolumeState.innerHTML = " 25%";
+            oscOneFrqState = document.getElementById("oscOneFrqState");
+            oscOneFrqState.innerHTML = " 440 hz";
+            oscOneWaveState = document.getElementById("oscOneWaveState");
 
             oscTwoCtrl = document.getElementById("oscTwoCtrl");
             oscTwoVolumeState = document.getElementById("oscTwoVolumeState");
             oscTwoVolumeState.innerHTML = " 25%";
+            oscTwoFrqState = document.getElementById("oscTwoFrqState");
+            oscTwoFrqState.innerHTML = " 330 hz";
 
             audioCtx = new AudioContext();
             destination  = audioCtx.destination;
