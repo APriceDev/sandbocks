@@ -18,6 +18,10 @@
         oscOneFrqLevel = 440,
         oscOneFrqState,
         oscOneWaveState,
+        oscOneLpf,
+        oscOneLpfFreqLevel = 10000,
+        oscOneLpfFreq,
+        oscOneLpfFreqState,
         oscOneCtrl,
         oscOneToggle = "stop",
 
@@ -41,6 +45,7 @@
 
             oscOneVol = $("#oscOneVol");
             oscOneFrq = $("#oscOneFrq");
+            oscOneLpfFreq = $("#oscOneLpfFreq");
 
             oscTwoVol = $("#oscTwoVol");
             oscTwoFrq = $("#oscTwoFrq");
@@ -59,6 +64,7 @@
                 }
             });
 
+            //osc one
             oscOneVol.slider({
                 //orientation: "vertical",
                 min: 0,
@@ -75,8 +81,8 @@
 
             oscOneFrq.slider({
                 //orientation: "vertical",
-                min: 10,
-                max: 3000,
+                min: 0,
+                max: 5000,
                 step: 1,
                 value: oscOneFrqLevel,
                 slide: function(e, ui){
@@ -87,6 +93,21 @@
                 }
             });
 
+            oscOneLpfFreq.slider({
+                //orientation: "vertical",
+                min: 0,
+                max: 10000,
+                step: 1,
+                value: oscOneLpfFreqLevel,
+                slide: function(e, ui){
+                    updateOscOneLpfFreq(ui.value, this, oscOneLpfFreqState);
+                },
+                change: function(e, ui){
+                    updateOscOneLpfFreq(ui.value, this, oscOneLpfFreqState);
+                }
+            });
+
+            // osc two
             oscTwoVol.slider({
                 //orientation: "vertical",
                 min: 0,
@@ -103,8 +124,8 @@
 
             oscTwoFrq.slider({
                 //orientation: "vertical",
-                min: 10,
-                max: 3000,
+                min: 0,
+                max: 5000,
                 step: 1,
                 value: oscTwoFrqLevel,
                 slide: function(e, ui){
@@ -127,15 +148,20 @@
                 // assign values
                 oscOne.type = oscOneWaveType;
                 oscOne.frequency.value = oscOneFrqLevel;
+                oscOneLpf = audioCtx.createBiquadFilter();
+                oscOneLpf.type = "lowpass";
+                console.log();
 
                 // update values
                 updateOscOneGain();
                 updateOscOneFrq();
+                updateOscOneLpfFreq();
 
                 // buss
                 masterGain.connect(destination);
                 oscOneGain.connect(masterGain);
-                oscOne.connect(oscOneGain);
+                oscOneLpf.connect(oscOneGain);
+                oscOne.connect(oscOneLpf);
 
                 // let 'er rip!
                 oscOne.start(0);
@@ -166,6 +192,19 @@
 
             if(oscOne){
                     oscOne.frequency.value = oscOneFrqLevel;
+            }
+
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = " " + value + " hz";
+            }
+        };
+
+         var updateOscOneLpfFreq = function(value, el, htmlObject){
+
+            value === undefined ? oscOneLpfFreqLevel : oscOneLpfFreqLevel = value;
+
+            if(oscOneLpf){
+                    oscOneLpf.frequency.value = oscOneLpfFreqLevel;
             }
 
             if(el !== undefined){
@@ -290,6 +329,9 @@
             oscOneFrqState = document.getElementById("oscOneFrqState");
             oscOneFrqState.innerHTML = " 440 hz";
             oscOneWaveState = document.getElementById("oscOneWaveState");
+            oscOneLpfFreqState = document.getElementById("oscOneLpfFreqState");
+            oscOneLpfFreqState.innerHTML = " 10000 hz";
+
 
             oscTwoCtrl = document.getElementById("oscTwoCtrl");
             oscTwoVolumeState = document.getElementById("oscTwoVolumeState");

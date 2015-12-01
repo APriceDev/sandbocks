@@ -11,20 +11,28 @@
         <div>NoiseBox NB-2</div>
     </header>
 
+    <!-- Osc One -->
     <div class="rack">
         <div class="toggle" id ="oscOneCtrl" title="Osc One Toggle">1</div>
         <label for="Osc One Gain">Gain</label><span id="oscOneVolumeState"></span>
         <div class="slider" id="oscOneVol" title="Osc One Gain"></div>
         <label for="Osc One Frequency">Frq</label><span id="oscOneFrqState"></span>
         <div class="slider" id="oscOneFrq" title="Osc One Frequency"></div>
+        <hr>
         <div id="oscOneWaveState">
             <input type="radio" id="sineOscOne" name="oscOneWave" title="sine" checked="checked"><label for="sine"><span></span>Sine</label>
             <input type="radio" id="squareOscOne" name="oscOneWave" title="square"><label for="square"><span></span>Square</label>
             <input type="radio" id="triangleOscOne" name="oscOneWave" title="triangle"><label for="triangle"><span></span>Triangle</label>
             <input type="radio" id="sawtoothOscOne" name="oscOneWave" title="sawtooth"><label for="sawtooth"><span></span>Saw</label>
         </div>
+        <hr>
+        <div id="oscOneLpf">
+            <label for="oscOneLpfFreq">LPF</label><span id="oscOneLpfFreqState"></span>
+            <div class="slider" id="oscOneLpfFreq" title="LPF"></div>
+        </div>
     </div>
 
+    <!-- Osc Two -->
     <div class="rack">
         <div class="toggle" id ="oscTwoCtrl" title="Osc Two Toggle">2</div>
         <label for="Osc Two Gain">Gain</label><span id="oscTwoVolumeState"></span>
@@ -39,6 +47,7 @@
         </div>
     </div>
 
+    <!-- Master -->
     <div class="rack">
         <label for="Master Gain">Master Gain</label><span id="masterVolumeState"></span>
         <div class="slider" id="masterVol" title="Master Gain"></div>

@@ -30,6 +30,12 @@ footer{
     font-size: 0.8em;
 }
 
+hr{
+    border: 0;
+    height: 1px;
+    background: rgba(255,255,255,0.2);
+}
+
 .rack{
     border: solid 1px rgba(255,255,255,0.2);
     border-radius: 15px;
