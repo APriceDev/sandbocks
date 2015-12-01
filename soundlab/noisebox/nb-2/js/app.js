@@ -175,7 +175,6 @@
 
         var oscOneWaveUpdate = function(e){
 
-            console.log(e.target.title);
             e === undefined ? oscOneWaveType : oscOneWaveType = e.target.title;
             if(oscOne){
                 oscOne.type = oscOneWaveType;
@@ -240,7 +239,6 @@
 
         var oscTwoWaveUpdate = function(e){
 
-            console.log(e.target.title);
             e === undefined ? oscTwoWaveType : oscTwoWaveType = e.target.title;
             if(oscTwo){
                 oscTwo.type = oscTwoWaveType;
