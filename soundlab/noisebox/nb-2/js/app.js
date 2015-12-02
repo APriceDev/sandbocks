@@ -3,6 +3,8 @@
 
         var audioCtx,
         destination,
+        percent = " %",
+        hertz = " hz",
         masterGain,
         masterVol,
         masterVolLevel = 0.25,
@@ -57,10 +59,10 @@
                 step: 0.01,
                 value: masterVolLevel,
                 slide: function(e, ui){
-                    updateMasterGain(ui.value, this, masterVolumeState);
+                    updateMasterGain(ui.value, this, masterVolumeState, percent);
                 },
                 change: function(e, ui){
-                    updateMasterGain(ui.value, this, masterVolumeState);
+                    updateMasterGain(ui.value, this, masterVolumeState, percent);
                 }
             });
 
@@ -72,10 +74,10 @@
                 step: 0.01,
                 value: oscOneVolLevel,
                 slide: function(e, ui){
-                    updateOscOneGain(ui.value, this, oscOneVolumeState);
+                    updateOscOneGain(ui.value, this, oscOneVolumeState, percent);
                 },
                 change: function(e, ui){
-                    updateOscOneGain(ui.value, this, oscOneVolumeState);
+                    updateOscOneGain(ui.value, this, oscOneVolumeState, percent);
                 }
             });
 
@@ -86,10 +88,10 @@
                 step: 1,
                 value: oscOneFrqLevel,
                 slide: function(e, ui){
-                    updateOscOneFrq(ui.value, this, oscOneFrqState);
+                    updateOscOneFrq(ui.value, this, oscOneFrqState, hertz);
                 },
                 change: function(e, ui){
-                    updateOscOneFrq(ui.value, this, oscOneFrqState);
+                    updateOscOneFrq(ui.value, this, oscOneFrqState, hertz);
                 }
             });
 
@@ -100,10 +102,10 @@
                 step: 1,
                 value: oscOneLpfFreqLevel,
                 slide: function(e, ui){
-                    updateOscOneLpfFreq(ui.value, this, oscOneLpfFreqState);
+                    updateOscOneLpfFreq(ui.value, this, oscOneLpfFreqState, hertz);
                 },
                 change: function(e, ui){
-                    updateOscOneLpfFreq(ui.value, this, oscOneLpfFreqState);
+                    updateOscOneLpfFreq(ui.value, this, oscOneLpfFreqState, hertz);
                 }
             });
 
@@ -115,10 +117,10 @@
                 step: 0.01,
                 value: oscTwoVolLevel,
                 slide: function(e, ui){
-                    updateOscTwoGain(ui.value, this, oscTwoVolumeState);
+                    updateOscTwoGain(ui.value, this, oscTwoVolumeState, percent);
                 },
                 change: function(e, ui){
-                    updateOscTwoGain(ui.value, this, oscTwoVolumeState);
+                    updateOscTwoGain(ui.value, this, oscTwoVolumeState, percent);
                 }
             });
 
@@ -129,10 +131,10 @@
                 step: 1,
                 value: oscTwoFrqLevel,
                 slide: function(e, ui){
-                    updateOscTwoFrq(ui.value, this, oscTwoFrqState);
+                    updateOscTwoFrq(ui.value, this, oscTwoFrqState, hertz);
                 },
                 change: function(e, ui){
-                    updateOscTwoFrq(ui.value, this, oscTwoFrqState);
+                    updateOscTwoFrq(ui.value, this, oscTwoFrqState, hertz);
                 }
             });
         });
@@ -173,7 +175,7 @@
              oscOneToggle = "stop";
          };
 
-        var updateOscOneGain = function(value, el, htmlObject){
+        var updateOscOneGain = function(value, el, htmlObject, str){
 
             value === undefined ? oscOneVolLevel : oscOneVolLevel = value;
 
@@ -182,11 +184,11 @@
             }
 
             if(el !== undefined){
-                htmlObject.firstChild.nodeValue = " " + (parseInt(value * 100)) + "%";
+                htmlObject.firstChild.nodeValue = (parseInt(value * 100)) + str;
             }
         };
 
-         var updateOscOneFrq = function(value, el, htmlObject){
+         var updateOscOneFrq = function(value, el, htmlObject, str){
 
             value === undefined ? oscOneFrqLevel : oscOneFrqLevel = value;
 
@@ -195,11 +197,11 @@
             }
 
             if(el !== undefined){
-                htmlObject.firstChild.nodeValue = " " + value + " hz";
+                htmlObject.firstChild.nodeValue = value + str;
             }
         };
 
-         var updateOscOneLpfFreq = function(value, el, htmlObject){
+         var updateOscOneLpfFreq = function(value, el, htmlObject, str){
 
             value === undefined ? oscOneLpfFreqLevel : oscOneLpfFreqLevel = value;
 
@@ -208,7 +210,7 @@
             }
 
             if(el !== undefined){
-                htmlObject.firstChild.nodeValue = " " + value + " hz";
+                htmlObject.firstChild.nodeValue = value + str;
             }
         };
 
@@ -250,7 +252,7 @@
              oscTwoToggle = "stop";
          };
 
-        var updateOscTwoGain = function(value, el, htmlObject){
+        var updateOscTwoGain = function(value, el, htmlObject, str){
 
             value === undefined ? oscTwoVolLevel : oscTwoVolLevel = value;
 
@@ -259,11 +261,11 @@
             }
 
             if(el !== undefined){
-                htmlObject.firstChild.nodeValue = " " + (parseInt(value * 100)) + "%";
+                htmlObject.firstChild.nodeValue = (parseInt(value * 100)) + str;
             }
         };
 
-         var updateOscTwoFrq = function(value, el, htmlObject){
+         var updateOscTwoFrq = function(value, el, htmlObject, str){
 
             value === undefined ? oscTwoFrqLevel : oscTwoFrqLevel = value;
 
@@ -272,7 +274,7 @@
             }
 
             if(el !== undefined){
-                htmlObject.firstChild.nodeValue = " " + value + " hz";
+                htmlObject.firstChild.nodeValue = value + str;
             }
         };
 
@@ -286,7 +288,7 @@
 
  // utilities  *******************************************************
 
-        var updateMasterGain = function(value, el, htmlObject){
+        var updateMasterGain = function(value, el, htmlObject, str){
 
             value === undefined ? masterVolLevel : masterVolLevel = value;
 
@@ -295,7 +297,7 @@
             }
 
             if(el !== undefined){
-                htmlObject.firstChild.nodeValue = " " + (parseInt(value * 100)) + "%";
+                htmlObject.firstChild.nodeValue = (parseInt(value * 100)) + str;
             }
         };
 
@@ -321,23 +323,22 @@
         var init = function(){
 
             masterVolumeState = document.getElementById("masterVolumeState");
-            masterVolumeState.innerHTML = " 25%";
+            masterVolumeState.innerHTML = (parseInt(masterVolLevel * 100)) + percent;
 
             oscOneCtrl = document.getElementById("oscOneCtrl");
             oscOneVolumeState = document.getElementById("oscOneVolumeState");
-            oscOneVolumeState.innerHTML = " 25%";
+            oscOneVolumeState.innerHTML = (parseInt(oscOneVolLevel * 100)) + percent;
             oscOneFrqState = document.getElementById("oscOneFrqState");
-            oscOneFrqState.innerHTML = " 440 hz";
+            oscOneFrqState.innerHTML = oscOneFrqLevel + hertz;
             oscOneWaveState = document.getElementById("oscOneWaveState");
             oscOneLpfFreqState = document.getElementById("oscOneLpfFreqState");
-            oscOneLpfFreqState.innerHTML = " 10000 hz";
-
+            oscOneLpfFreqState.innerHTML = oscOneLpfFreqLevel + hertz;
 
             oscTwoCtrl = document.getElementById("oscTwoCtrl");
             oscTwoVolumeState = document.getElementById("oscTwoVolumeState");
-            oscTwoVolumeState.innerHTML = " 25%";
+            oscTwoVolumeState.innerHTML = (parseInt(oscTwoVolLevel * 100)) + percent;
             oscTwoFrqState = document.getElementById("oscTwoFrqState");
-            oscTwoFrqState.innerHTML = " 330 hz";
+            oscTwoFrqState.innerHTML = oscTwoFrqLevel + hertz;
             oscTwoWaveState = document.getElementById("oscTwoWaveState");
 
             audioCtx = new AudioContext();
