@@ -1,3 +1,6 @@
+    // https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode
+    //http://stackoverflow.com/questions/22312841/waveshaper-node-in-webaudio-how-to-emulate-distortion
+
     var nb2 = (function($){
         "use strict"
 
@@ -37,6 +40,7 @@
         oscTwoFrqLevel = 330,
         oscTwoFrqState,
         oscTwoWaveState,
+        oscTwoDistortion,
         oscTwoCtrl,
         oscTwoToggle = "stop";
 
@@ -139,8 +143,27 @@
             });
         });
 
-// oscillator one  *******************************************************
+// waveshaper for oscillator two  *******************************************************
 
+    // function from MDN docs
+    var makeDistortionCurve = function (amount) {
+        var k = typeof amount === 'number' ? amount : 50,
+        n_samples = 44100,
+        curve = new Float32Array(n_samples),
+        deg = Math.PI / 180,
+        i = 0,
+        x;
+
+        for ( ; i < n_samples; ++i ) {
+            x = i * 2 / n_samples - 1;
+            curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
+        };
+
+       //console.log(curve);
+        return curve;
+    };
+
+// oscillator one  *******************************************************
             var playOscOne = function(){
 
                 // create params
@@ -168,6 +191,8 @@
                 // let 'er rip!
                 oscOne.start(0);
                 oscOneToggle = "start";
+
+                //console.log(audioCtx.currentTime);
             };
 
             var stopOscOne = function(){
@@ -222,16 +247,18 @@
             };
         };
  // oscillator two  *******************************************************
-
             var playOscTwo = function(){
 
                 // create params
                 oscTwo = audioCtx.createOscillator();
                 oscTwoGain = audioCtx.createGain();
+                oscTwoDistortion = audioCtx.createWaveShaper();
 
                 // assign values
                 oscTwo.type = oscTwoWaveType;
                 oscTwo.frequency.value = oscTwoFrqLevel;
+                oscTwoDistortion.curve = makeDistortionCurve(400);
+                oscTwoDistortion.oversample = '4x';
 
                 // update values
                 updateOscTwoGain();
@@ -240,7 +267,11 @@
                 // buss
                 masterGain.connect(destination);
                 oscTwoGain.connect(masterGain);
-                oscTwo.connect(oscTwoGain);
+
+                oscTwoDistortion.connect(oscTwoGain);
+                oscTwo.connect(oscTwoDistortion);
+
+                //oscTwo.connect(oscTwoGain);
 
                 //let 'er rip!
                 oscTwo.start(0);
@@ -287,7 +318,6 @@
         };
 
  // utilities  *******************************************************
-
         var updateMasterGain = function(value, el, htmlObject, str){
 
             value === undefined ? masterVolLevel : masterVolLevel = value;
