@@ -39,8 +39,10 @@
         oscTwoFrq,
         oscTwoFrqLevel = 330,
         oscTwoFrqState,
-        oscTwoWaveState,
         oscTwoDistortion,
+        oscTwoDistortionAmt = 0,
+        oscTwoDistortiontState,
+        oscTwoWaveState,
         oscTwoCtrl,
         oscTwoToggle = "stop";
 
@@ -55,6 +57,7 @@
 
             oscTwoVol = $("#oscTwoVol");
             oscTwoFrq = $("#oscTwoFrq");
+            oscTwoDistortion = $("#oscTwoDistortion");
 
             masterVol.slider({
                 //orientation: "vertical",
@@ -141,11 +144,24 @@
                     updateOscTwoFrq(ui.value, this, oscTwoFrqState, hertz);
                 }
             });
+
+            oscTwoDistortion.slider({
+                //orientation: "vertical",
+                min: 0,
+                max: 500,
+                step: 1,
+                value: oscTwoDistortionAmt,
+                slide: function(e, ui){
+                    updateOscTwoDistortionAmt(ui.value, this, oscTwoDistortiontState, "");
+                },
+                change: function(e, ui){
+                    updateOscTwoDistortionAmt(ui.value, this, oscTwoDistortiontState, "");
+                }
+            });
         });
 
 // waveshaper for oscillator two  *******************************************************
 
-    // function from MDN docs
     var makeDistortionCurve = function (amount) {
         var k = typeof amount === 'number' ? amount : 50,
         n_samples = 44100,
@@ -257,7 +273,7 @@
                 // assign values
                 oscTwo.type = oscTwoWaveType;
                 oscTwo.frequency.value = oscTwoFrqLevel;
-                oscTwoDistortion.curve = makeDistortionCurve(400);
+                //oscTwoDistortion.curve = makeDistortionCurve(400);
                 oscTwoDistortion.oversample = '4x';
 
                 // update values
@@ -317,6 +333,18 @@
             };
         };
 
+        var updateOscTwoDistortionAmt = function(value, el, htmlObject, str){
+
+            value === undefined ? oscTwoDistortionAmt : oscTwoDistortionAmt = value;
+
+            if(oscTwoDistortion){
+                 oscTwoDistortion.curve = makeDistortionCurve(oscTwoDistortionAmt);
+            }
+            if(el !== undefined){
+                htmlObject.firstChild.nodeValue = value + str;
+            }
+        };
+
  // utilities  *******************************************************
         var updateMasterGain = function(value, el, htmlObject, str){
 
@@ -369,6 +397,8 @@
             oscTwoVolumeState.innerHTML = (parseInt(oscTwoVolLevel * 100)) + percent;
             oscTwoFrqState = document.getElementById("oscTwoFrqState");
             oscTwoFrqState.innerHTML = oscTwoFrqLevel + hertz;
+            oscTwoDistortiontState = document.getElementById("oscTwoDistortiontState");
+            oscTwoDistortiontState.innerHTML = oscTwoDistortionAmt;
             oscTwoWaveState = document.getElementById("oscTwoWaveState");
 
             audioCtx = new AudioContext();
