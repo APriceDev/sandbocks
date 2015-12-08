@@ -45,6 +45,7 @@ hr{
     padding: 1em;
     text-align: center;
     width : 200px;
+    vertical-align: top;
 }
 
 .toggle{
