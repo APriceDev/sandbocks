@@ -3,7 +3,8 @@ var board = new five.Board();
 var moment = require("moment");
 var title = moment().format("YYYYMMDD-HHmmss");
 var fs = require("fs");
-var outputFile = fs.openSync("data/" + title + ".txt", "w");
+//var outputFile = fs.openSync("data/" + title + ".txt", "w");
+var outputFile = fs.openSync("../data/" + title + ".txt", "w");
 
 board.on("ready", function() {
   console.log("Board ready");
@@ -22,7 +23,8 @@ board.on("ready", function() {
 
     var f = this.F.toFixed(2);
     var timeStamp = moment().format("MMDD-HHmmss");
-    var output = timeStamp + " " + f + " °F";
+    //var output = timeStamp + " " + f + " °F";
+    var output = "{time : " + timeStamp + ", temp : " + f + "}";
     fs.writeSync(outputFile, output + "\r\n");
     console.log(output);
   });
