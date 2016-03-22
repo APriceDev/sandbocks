@@ -1,3 +1,5 @@
+// http://stackoverflow.com/questions/23558907/convert-text-file-into-clean-json-format
+// http://stackoverflow.com/questions/6831918/node-js-read-a-text-file-into-an-array-each-line-an-item-in-the-array
 
 var fs = require("fs");
 
@@ -8,8 +10,16 @@ fs.readFile(file, "utf8", function(err, data){
 
     var arr = data.split(/\r?\n/);
 
+    // var arr = data.split(/\r?\n/).reduce(function(m,i){
+    //     var s = i.split(':');
+    //     m[s.shift()] = s.join(':');
+    //     return m;
+    // }, {});
+
     for(i in arr){
-        console.log(JSON.stringify(arr[i]));
+        if(arr[i] != ""){
+            console.log(JSON.stringify(arr[i]).replace(/\\/g,""));
+        }
     }
 
 });
