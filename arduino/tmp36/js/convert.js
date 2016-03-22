@@ -1,5 +1,3 @@
-// http://stackoverflow.com/questions/23558907/convert-text-file-into-clean-json-format
-// http://stackoverflow.com/questions/6831918/node-js-read-a-text-file-into-an-array-each-line-an-item-in-the-array
 
 var fs = require("fs");
 
