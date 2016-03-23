@@ -24,6 +24,7 @@ board.on("ready", function() {
     var f = this.F.toFixed(2);
     var timeStamp = moment().format("MMDDHHmmss");
     //var output = timeStamp + " " + f + " °F";
+    //var output = "{time : " + timeStamp + ", temp : " + f + "}";
     var output = "{\'time\' : " + timeStamp + ", \'temp\' : " + f + "}";
     fs.writeSync(outputFile, output + "\r\n");
     console.log(output);
