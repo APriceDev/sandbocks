@@ -22,10 +22,10 @@ board.on("ready", function() {
   tmp36.on("data", function() {
 
     var f = this.F.toFixed(2);
-    var timeStamp = moment().format("MMDDHHmmss");
+    var timeStamp = moment().format("YYYYMMDDHHmmss");
     //var output = timeStamp + " " + f + " °F";
     //var output = "{time : " + timeStamp + ", temp : " + f + "}";
-    var output = "{\'time\' : " + timeStamp + ", \'temp\' : " + f + "}";
+    var output = "{\"time\" : " + timeStamp + ", \"temp\" : " + f + "}";
     fs.writeSync(outputFile, output + "\r\n");
     console.log(output);
   });
