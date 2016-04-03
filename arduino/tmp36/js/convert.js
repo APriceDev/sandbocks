@@ -2,22 +2,25 @@
 var fs = require("fs");
 
 var file = "../data/" + process.argv[2];
+var outputFile = fs.openSync("../data/" + process.argv[2] + ".json", "w");
 
 fs.readFile(file, "utf8", function(err, data){
     //console.log(data);
 
     var arr = data.split(/\r?\n/);
 
-    // var arr = data.split(/\r?\n/).reduce(function(m,i){
-    //     var s = i.split(':');
-    //     m[s.shift()] = s.join(':');
-    //     return m;
-    // }, {});
+    arr.pop();
+    //console.log(arr);
 
-    for(i in arr){
-        if(arr[i] != ""){
-            console.log(JSON.stringify(arr[i]).replace(/\\/g,""));
-        }
-    }
+    fs.writeSync(outputFile, "{ \"data\" : [");
+    fs.writeSync(outputFile, arr);
 
-});
+    // for(i in arr){
+    //         //console.log(JSON.stringify(arr[i]).replace(/\\/g,""));
+    //         //var output = JSON.stringify(arr[i]).replace(/\\/g,"");
+    //         var output = arr[i];
+    //         fs.writeSync(outputFile, output + "," + "\r\n");
+    //     }
+
+         fs.writeSync(outputFile, "]}");
+    });
