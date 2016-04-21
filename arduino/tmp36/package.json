@@ -2,20 +2,18 @@
   "name": "tmp36",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "tmp36.js",
+  "directories": {
+    "doc": "docs"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "arduino",
-    "tmp36"
-  ],
-  "author": "aotm",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.13.4",
-    "johnny-five": "^0.9.24",
-    "moment": "^2.11.2",
-    "socket.io": "^1.4.5"
+    "johnny-five": "^0.9.43",
+    "moment": "^2.13.0"
   }
 }
