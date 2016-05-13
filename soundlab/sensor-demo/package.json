@@ -1,0 +1,17 @@
+{
+  "name": "sensor-demo",
+  "version": "0.1.0",
+  "description": "",
+  "main": "sensor.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "johnny-five": "^0.9.49",
+    "socket.io": "^1.4.6"
+  }
+}
