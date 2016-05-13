@@ -1,8 +1,29 @@
     body {
+      animation: fading 45s infinite;
+      background-color: rgba(#553A7A);
+      margin: 0px;
+      padding: 0px;
       font-family: 'Lato', sans-serif;
-      color: white;
-      background-color: hsl(0, 60%, 65%);
-      transition: background-color 1s;
+      color:  rgba(255,255,255,1);
+      height: 100%;
+    }
+
+    @keyframes fading {
+      0%   { background: #553A7A; }
+      20%  { background: #3F7993; }
+      40%  { background: #C32583; }
+      60% { background: #F08904; }
+      80% { background: #A53BA8; }
+      100%   { background: #553A7A;}
+    }
+
+    @-webkit-keyframes fading {
+      0%   { background: #553A7A; }
+      20%  { background: #3F7993; }
+      40%  { background: #C32583; }
+      60% { background: #F08904; }
+      80% { background: #A53BA8; }
+      100%   { background: #553A7A;}
     }
 
     h1 {
