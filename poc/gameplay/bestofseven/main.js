@@ -9,7 +9,8 @@ function Team(name){
     this.goals = 0;
     this.wins = 0;
 };
-Team.prototype.goal = function() {return this.goals++};
+Team.prototype.goal = function(){return this.goals++};
+Team.prototype.win = function(){return this.wins++ }
 Team.display = (home, away) => {
     const listItem = document.createElement('li');
     listItem.innerHTML = `Home - ${home} Away - ${away}`;
@@ -35,7 +36,7 @@ function gameEvent(){
         tieBreaker();
     };
 
-    home.goals > away.goals  ? home.wins++ : away.wins++;
+    home.goals > away.goals  ? home.win() : away.win();
 
     Team.display(home.goals, away.goals);
     series();
