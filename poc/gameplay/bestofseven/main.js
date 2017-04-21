@@ -22,11 +22,24 @@ Team.display = (home, away) => {
 const home = new Team();
 const away = new Team();
 
+function roundedRandom(){
+    return Math.round(Math.random());
+}
+
+function score(){
+    roundedRandom() === 1 ? home.goal() : away.goal();
+}
+
 function gamePlay(counter){
     if(counter <= 0) return;
 
-    roundedRandom() === 1 ? home.goal() : away.goal();
+    score();
     return gamePlay(counter - 1);
+};
+
+function tieBreaker(){
+    tie = true;
+    score()
 };
 
 function gameEvent(){
@@ -44,10 +57,8 @@ function gameEvent(){
     [home.goals, away.goals, tie] = [0, 0, false];
 };
 
-function tieBreaker(){
-    tie = true;
-    roundedRandom() === 1 ? home.goals++ : away.goals++;
-};
+// remove team display method
+// create summary object w method for game and series msgs
 
 function series(){
     let msg;
@@ -65,19 +76,13 @@ function series(){
     }else if(away.wins === 4){
         msg = `Away wins series ${away.wins} - ${home.wins}`;
     }
-    //console.log(msg);
     summary.innerHTML = msg;
 };
 
 
 function resetEvent(){
     [home.wins, away.wins, scores.innerHTML, summary.innerHTML] = [0,0, ' ', `Let's do this!`];
-    //console.clear();
 };
-
-function roundedRandom(){
-    return Math.round(Math.random());
-}
 
 play.addEventListener('click', gameEvent);
 reset.addEventListener('click', resetEvent);
