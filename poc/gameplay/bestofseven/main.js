@@ -11,31 +11,13 @@ function Team(name){
 };
 Team.prototype.goal = function(){return this.goals++};
 Team.prototype.win = function(){return this.wins++ }
-Team.display = (home, away) => {
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `Home - ${home} Away - ${away}`;
-
-    if(tie === true) listItem.innerHTML = listItem.innerHTML + ` (OT)`
-        scores.appendChild(listItem);
-};
 
 const home = new Team();
 const away = new Team();
 
-function roundedRandom(){
-    return Math.round(Math.random());
-}
-
 function score(){
     roundedRandom() === 1 ? home.goal() : away.goal();
 }
-
-function gamePlay(counter){
-    if(counter <= 0) return;
-
-    score();
-    return gamePlay(counter - 1);
-};
 
 function tieBreaker(){
     tie = true;
@@ -51,16 +33,30 @@ function gameEvent(){
 
     home.goals > away.goals  ? home.win() : away.win();
 
-    Team.display(home.goals, away.goals);
-    series();
+    message.game(home.goals, away.goals);
+    message.series();
 
     [home.goals, away.goals, tie] = [0, 0, false];
 };
 
-// remove team display method
-// create summary object w method for game and series msgs
+function gamePlay(counter){
+    if(counter <= 0) return;
 
-function series(){
+    score();
+    return gamePlay(counter - 1);
+};
+
+const message = {};
+
+message.game = (home, away) => {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `Home - ${home} Away - ${away}`;
+
+    if(tie === true) listItem.innerHTML = listItem.innerHTML + ` (OT)`
+        scores.appendChild(listItem);
+};
+
+message.series = () => {
     let msg;
 
     if(home.wins > away.wins){
@@ -78,6 +74,10 @@ function series(){
     }
     summary.innerHTML = msg;
 };
+
+function roundedRandom(){
+    return Math.round(Math.random());
+}
 
 
 function resetEvent(){
