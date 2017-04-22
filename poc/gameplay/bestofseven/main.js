@@ -10,7 +10,7 @@ function Team(name){
     this.wins = 0;
 };
 Team.prototype.goal = function(){return this.goals++};
-Team.prototype.win = function(){return this.wins++ }
+Team.prototype.win = function(){return this.wins++};
 
 const home = new Team();
 const away = new Team();
@@ -22,6 +22,13 @@ function score(){
 function tieBreaker(){
     tie = true;
     score()
+};
+
+function gamePlay(counter){
+    if(counter <= 0) return;
+
+    score();
+    return gamePlay(counter - 1);
 };
 
 function gameEvent(){
@@ -37,13 +44,6 @@ function gameEvent(){
     message.series();
 
     [home.goals, away.goals, tie] = [0, 0, false];
-};
-
-function gamePlay(counter){
-    if(counter <= 0) return;
-
-    score();
-    return gamePlay(counter - 1);
 };
 
 const message = {};
@@ -78,7 +78,6 @@ message.series = () => {
 function roundedRandom(){
     return Math.round(Math.random());
 }
-
 
 function resetEvent(){
     [home.wins, away.wins, scores.innerHTML, summary.innerHTML] = [0,0, ' ', `Let's do this!`];
