@@ -4,7 +4,6 @@ const ctx = canvas.getContext('2d');
 const calibrate = document.querySelector('#calibrate');
 const cycle = document.querySelector('#cycle');
 
-
 function Blip(x = 0, y = 0, rate = 0){
     this.posX = x;
     this.posY = y;
@@ -12,14 +11,14 @@ function Blip(x = 0, y = 0, rate = 0){
     this.update = function(){this.posX += this.rate};
 }
 Blip.prototype.fillStyle = function(color){return ctx.fillStyle = color};
-Blip.prototype.fillRect = function(width, height){return ctx.fillRect(this.posX, this.posY , width, height)};
+Blip.prototype.fillRect = function(width, height){return ctx.fillRect(this.posX, this.posY, width, height)};
 
 const dash = new Blip(0, 200);
+function yPosition(){dash.posY = parseInt(this.value)};
+function xPosition(){dash.rate = parseInt(this.value)};
 
 ctx.fillStyle ='rgba(0, 50, 0, 1)';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-window.requestAnimationFrame(draw);
 
 function draw(){
     ctx.fillStyle ='rgba(0, 50, 0, 0.5)';
@@ -27,22 +26,13 @@ function draw(){
 
     dash.fillStyle('rgba(0, 175, 0, 0.65)');
     dash.fillRect(10, 10);
-
     dash.update();
-
     if(dash.posX >= canvas.width){ dash.posX = 0};
 
-    window.requestAnimationFrame(draw);
+    requestAnimationFrame(draw);
 }
 
-function yChange(){
-    dash.posY = parseInt(this.value);
-    console.log(parseInt(this.value));
-}
+draw();
 
-function xChange(){
-    dash.rate = parseInt(this.value);
-}
-
-calibrate.addEventListener('input', yChange);
-cycle.addEventListener('input', xChange);
+calibrate.addEventListener('input', yPosition);
+cycle.addEventListener('input',  xPosition);
