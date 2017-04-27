@@ -9,13 +9,13 @@ function Blip(x = 0, y = 0, rate = 0){
     this.posY = y;
     this.rate = rate;
 }
-Blip.prototype.update = function(){this.posX += this.rate};
 Blip.prototype.draw = function(color, width, height){
     ctx.fillStyle = color;
     ctx.fillRect(this.posX, this.posY, width, height)
 };
 
 const dash = new Blip(0, 200);
+dash.update = function(){this.posX += this.rate};
 function yPosition(){dash.posY = parseInt(this.value)};
 function xPosition(){dash.rate = parseInt(this.value)};
 
