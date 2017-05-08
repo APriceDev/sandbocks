@@ -44,7 +44,7 @@ header {
     justify-content: center;
 }
 
-canvas, #dashboard, .slider{
+canvas, .slider{
     border: 1px solid rgba(209, 209, 209, 1);
     border-radius: 1rem;
     height: 6rem;
@@ -65,16 +65,23 @@ canvas, #dashboard, .slider{
     vertical-align: text-bottom;
 }
 
-#dashboard,  .slider{
+#dashboard, .slider{
     display: flex;
     flex: 1;
     align-items: center;
     align-content: center;
     justify-content: center;
-    height: 4rem;
     overflow: hidden;
 }
 
+#dashboard{
+    height: 4rem;
+    width: 30rem;
+}
+
+.slider{
+    height: 2rem;
+}
 .range{
   width: 50%;
   background:linear-gradient(-170deg, #2376ae 0%, #c16ecf 100%);
@@ -90,7 +97,7 @@ canvas, #dashboard, .slider{
 .button {
     flex: 1;
     margin: 0 0.25rem 0 0.25rem;
-    border: 2px solid rgba(209, 209, 209, 1);
+    border: 1px solid rgba(209, 209, 209, 1);
     border-radius: 1rem;
     height: 3em;
     /*width: 4em;*/
