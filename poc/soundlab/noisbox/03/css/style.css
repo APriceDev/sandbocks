@@ -12,6 +12,7 @@ body {
     background-image: linear-gradient(#690988, #07C5F5);
     color: rgba(209, 209, 209, 1);
     font-family: 'Roboto', sans-serif;
+    font-weight: 400;
 }
 
 .container {
@@ -46,29 +47,44 @@ header {
 canvas, #dashboard, .slider{
     border: 1px solid rgba(209, 209, 209, 1);
     border-radius: 1rem;
-    height: 8rem;
+    height: 6rem;
     width: 30rem;
-    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
-.slider {
+.slider, .label {
     color: rgba(209, 209, 209, 1);
     text-align: center;
     font-size: 3rem;
-    font-weight: 100;
     letter-spacing: 0.8rem;
 }
 
-.skew{
+.label{
     transform: scale(1, 0.6);
+    font-size: 1rem;
+    vertical-align: text-bottom;
 }
 
-#dashboard,  .slider {
+#dashboard,  .slider{
     display: flex;
+    flex: 1;
     align-items: center;
     align-content: center;
     justify-content: center;
     height: 4rem;
+    overflow: hidden;
+}
+
+.range{
+  width: 50%;
+  background:linear-gradient(-170deg, #2376ae 0%, #c16ecf 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding:20px;
+  height: 100%;
+  font-size: 1.1rem;
+  border-radius: 2rem;
 }
 
 .button {
@@ -88,28 +104,28 @@ canvas, #dashboard, .slider{
 
 #power:before{
     content: "\25CF\ ";
-    }
+}
 
 /*#power:before{
     content: "\2742\ ";
-}*/
+    }*/
 
-#power:before{
-    content: "\25CE\ ";
-}
+    #power:before{
+        content: "\25CE\ ";
+    }
 
-#sine:before{
-    content: "\223F\ ";
-}
+    #sine:before{
+        content: "\223F\ ";
+    }
 
-#square:before{
-    content: "\2293\ ";
-}
+    #square:before{
+        content: "\2293\ ";
+    }
 
-#triangle:before{
-    content: "\25B3\ ";
-}
+    #triangle:before{
+        content: "\25B3\ ";
+    }
 
-#sawtooth:before{
-    content: "\25FA\ ";
-}
+    #sawtooth:before{
+        content: "\25FA\ ";
+    }
