@@ -1,4 +1,3 @@
-
 // init module pattern
 const createCanvas = function(width = 800, height = 600){
     const canvas = document.querySelector('#hadron');
@@ -14,17 +13,14 @@ const createCanvas = function(width = 800, height = 600){
 }();
 
 // subsequent module pattern
-(function(module){
+// (function(module){
+//     const canvas = module.canvas;
+//     const ctx = module.ctx;
 
-    const canvas = module.canvas;
-    const ctx = module.ctx;
-
-    for(let i = 0; i <=100; i++){
-        ctx.beginPath();
-        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-        ctx.stroke();
-    }
-
-})(createCanvas);
-
+//     for(let i = 0; i <=100; i++){
+//         ctx.beginPath();
+//         ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+//         ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+//         ctx.stroke();
+//     };
+// })(createCanvas);
