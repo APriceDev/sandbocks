@@ -1,7 +1,12 @@
+const hadron = {};
+
 // init module pattern
-const createCanvas = function(width = 800, height = 600){
-    const canvas = document.querySelector('#hadron');
+hadron.createCanvas = (function(width = 800, height = 600){
+    const canvas = document.querySelector('#cern');
     const ctx = canvas.getContext('2d');
+
+    // ctx.fillStyle = 'rgba(255, 255, 255, 1.0)';
+    // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     canvas.width = width;
     canvas.height = height;
@@ -10,17 +15,4 @@ const createCanvas = function(width = 800, height = 600){
         canvas : canvas,
         ctx : ctx
     }
-}();
-
-// subsequent module pattern
-// (function(module){
-//     const canvas = module.canvas;
-//     const ctx = module.ctx;
-
-//     for(let i = 0; i <=100; i++){
-//         ctx.beginPath();
-//         ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
-//         ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
-//         ctx.stroke();
-//     };
-// })(createCanvas);
+}());
