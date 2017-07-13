@@ -3,9 +3,8 @@ const utilities = require('./modules/utilities');
 
 let pathToFile = process.argv[2];
 
-let trim, arr, format, parsed;
-
 function getData(callback){
+    let trim, arr, format, parsed;
     fs.readFile(pathToFile, 'utf8', function(err, data){
         if(err) throw err;
         trim = utilities.removeComma(data);
