@@ -1,7 +1,8 @@
 const fs = require('fs');
 const utilities = require('./modules/utilities');
+const pathToFile = process.argv[2];
 
-let pathToFile = process.argv[2];
+getData(parseData);
 
 function getData(callback){
     fs.readFile(pathToFile, 'utf8', function(err, data){
@@ -11,13 +12,9 @@ function getData(callback){
 };
 
 function parseData(data){
-    let trim, arr, format, parsed;
-
-    trim = utilities.removeComma(data);
-    arr = utilities.itemsToArray(trim);
-    format = utilities.formatData(arr);
-    parsed = utilities.parseData(format);
-    utilities.displayData(parsed);
+    utilities.removeGunk(data)
+        .itemsToArray()
+        .formatData()
+        .parseData()
+        .displayDatum();
 };
-
-getData(parseData);

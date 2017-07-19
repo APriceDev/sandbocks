@@ -1,4 +1,3 @@
-//http://javascriptissexy.com/beautiful-javascript-easily-create-chainable-cascading-methods-for-expressiveness/
 module.exports = {
     datum : "",
     // removes \r\n + trailing comma JSON.parse() does not allow trailing commas
