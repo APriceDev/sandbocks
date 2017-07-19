@@ -1,27 +1,42 @@
+//http://javascriptissexy.com/beautiful-javascript-easily-create-chainable-cascading-methods-for-expressiveness/
 module.exports = {
-    // removes trailing comma JSON.parse() does not allow trailing commas
-    removeComma : (data) => {
-        return data.replace(/[\s,]+$/g, '');
+    datum : "",
+    // removes \r\n + trailing comma JSON.parse() does not allow trailing commas
+    removeGunk : function(data){
+        this.datum  = data.replace(/\r?\n|\r/g, '').replace(/[\s,]+$/g, '');
+        return this;
     },
-    // trimmed items into array
-    itemsToArray : (data) => {
-        return data.split(",").map(item => item.trim());
+    // trim items into array
+    itemsToArray : function(){
+        if(this.datum){
+            this.datum = this.datum.split(",").map(item => item.trim());
+        }
+        return this;
     },
     // format items,  ready for JSON
-    formatData : (data) => {
-        return data.map(item => `{"temp" : ${item.split(" ")[0]}, "time" : ${item.split(" ")[1]}}`);
+    formatData : function() {
+        if(this.datum){
+            this.datum = this.datum.map(item => `{"temp" : ${item.split(" ")[0]}, "time" : ${item.split(" ")[1]}}`);
+        }
+        return this;
     },
     // JSON parse
-    parseData : (data) => {
-        const dataArray = [];
-        data.forEach(item => dataArray.push(JSON.parse(item)));
-        return dataArray;
+    parseData : function(){
+        if(this.datum){
+            const dataArray = [];
+            this.datum.forEach(item => dataArray.push(JSON.parse(item)));
+            this.datum = dataArray;
+        }
+        return this;
     },
     // display the data in format as needed
-    displayData : (data) => {
-        data.forEach(item => {
-            const date = new Date(item.time)
-            console.log(item.temp, date);
-        });
+    // displayData : function(data){
+    //     data.forEach(item => {
+    //         const date = new Date(item.time)
+    //         console.log(item.temp, date);
+    //     });
+    // }
+    displayDatum : function(){
+        console.log(this.datum);
     }
 };
